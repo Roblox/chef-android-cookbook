@@ -93,3 +93,5 @@ suites:
         - build-tools-22.0.1
         - android-22
         - sys-img-armeabi-v7a-android-22
+      packages:
+        - 'cmake;3.6.3155560'

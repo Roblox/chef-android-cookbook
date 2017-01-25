@@ -26,6 +26,7 @@
 setup_root       = node['android-sdk']['setup_root'].to_s.empty? ? node['ark']['prefix_home'] : node['android-sdk']['setup_root']
 android_home     = File.join(setup_root, node['android-sdk']['name'])
 android_bin      = File.join(android_home, 'tools', 'android')
+sdkmanager_bin   = File.join(android_home, 'tools/bin', 'sdkmanager')
 
 #
 # Install required libraries
@@ -160,6 +161,30 @@ unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}/temp")
       EOF
     end
   end
+
+  # Requires 'sdkmanager' installed via the 'tools' component above
+  node['android-sdk']['packages'].each do |package|
+    script "Install Android package #{package}" do
+      interpreter 'expect'
+      environment 'ANDROID_HOME' => android_home
+      path [File.join(android_home, 'tools/bin')]
+      user node['android-sdk']['owner']
+      group node['android-sdk']['group']
+      # TODO: use --force or not?
+      code <<-EOF
+          spawn #{sdkmanager_bin} "#{package}"
+          set timeout 180
+          expect {
+            "Accept? (y/N):" {
+                  exp_send "y\r"
+                  exp_continue
+            }
+            eof
+          }
+      EOF
+    end
+  end
+
 end
 
 #
