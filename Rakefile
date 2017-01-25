@@ -7,7 +7,7 @@ require 'rubocop/rake_task'
 require 'rspec/core/rake_task'
 
 # TODO: add chefspec
-task default: [:tailor, :rubocop, :foodcritic, :knife]
+task default: [:tailor, :rubocop, :foodcritic, :knife, :serverspec]
 
 desc 'Lint Ruby code'
 task :tailor do
@@ -39,10 +39,16 @@ end
 RuboCop::RakeTask.new
 
 FoodCritic::Rake::LintTask.new do |t|
-  t.options = { fail_tags: ['any'], tags: ['~FC041'] }
+  t.options = { fail_tags: ['any'], tags: ['~FC041', '~FC053'] }
 end
 
-RSpec::Core::RakeTask.new
+desc 'Run serverspec test'
+task :serverspec do
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.pattern = 'test/integration/default/serverspec/*_spec.rb'
+  end
+  Rake::Task['spec'].execute
+end
 
 desc 'Run knife cookbook test'
 task :knife do
