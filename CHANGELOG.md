@@ -1,6 +1,17 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
+v0.3.1
+------
+
+- Fix compatibility error with Chef 13.x [GH-40] The `Chef::Resource::Script#path`
+  property has been removed in Chef 13.
+
+v0.3.0
+------
+
+- Re-code
+
 v0.2.0 (2015-10-17)
 -------------------
 
