@@ -166,7 +166,6 @@ unless File.exist?("#{setup_root}/#{node['android-sdk']['name']}/temp")
     script "Install Android package #{package}" do
       interpreter 'expect'
       environment 'ANDROID_HOME' => android_home
-      path [File.join(android_home, 'tools/bin')]
       user node['android-sdk']['owner']
       group node['android-sdk']['group']
       # TODO: use --force or not?
