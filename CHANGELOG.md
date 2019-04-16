@@ -1,6 +1,11 @@
 CHANGELOG for Android-SDK cookbook
 ==================================
 
+v0.4.0
+------
+
+- Remove Java cookbook version dependency
+
 v0.3.1
 ------
 
